@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #b7c9e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Estilo para el título */
+        .form-title {
+            text-align: center;
+            color: #000000;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        form {
+            background: rgb(200, 255, 104);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        #ojo {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        #fortaleza {
+            height: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+
+        span[id^="err"] {
+            display: block;
+            min-height: 20px;
+            color: #e74c3c;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        #boton {
+            width: 100%;
+            padding: 12px;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #boton:hover {
+            background-color: #357abd;
+        }
+
+        #boton:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        input.error, textarea.error, select.error {
+            border-color: #e74c3c;
+            background-color: #fff1f0;
+        }
+
+        .inline-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .inline-group label {
+            margin: 0 10px 0 0;
+            flex-shrink: 0;
+        }
+
+        .inline-group input[type="radio"],
+        .inline-group input[type="checkbox"] {
+            width: auto;
+            margin: 0 5px 0 0;
+        }
+
+        .inline-group span {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 class="form-title">Formulario de Registro</h1>
+        <form action="#" method="POST" name="formulario">
+            <label for="nombre">* Nombre:</label>
+            <input type="text" name="nombre" id="nombre" 
+                minlength="2" maxlength="50" required onblur="validarNombre()">
+            <span id="errNombre"></span>
+
+            <label for="apellido">* Apellido:</label>
+            <input type="text" name="apellido" id="apellido" 
+                minlength="4" maxlength="75" required onblur="validarApellido()">
+            <span id="errApellido"></span>
+
+            <label for="edad">* Edad:</label>
+            <input type="number" name="edad" id="edad" min="1" max="120" required onblur="validarEdad()">
+            <span id="errEdad"></span>
+
+            <label for="telefono">* Teléfono:</label>
+            <input type="tel" name="telefono" id="telefono" 
+                pattern="[0-9]{9}" required onblur="validarTelefono()">
+            <span id="errTelefono"></span>
+
+            <div class="inline-group">
+                <label for="sexo">* Sexo:</label>
+                <input type="radio" name="sexo" id="sexoHombre" value="Hombre" required> 
+                <label for="sexoHombre" style="font-weight: normal;">Hombre</label>
+                <input type="radio" name="sexo" id="sexoMujer" value="Mujer" required> 
+                <label for="sexoMujer" style="font-weight: normal;">Mujer</label>
+                <span id="errSexo"></span>
+            </div>
+
+            <label for="comentario">* Comentario:</label>
+            <textarea name="comentario" id="comentario" cols="30" rows="5" required></textarea>
+
+            <label for="usuario">* Usuario:</label>
+            <input type="text" name="usuario" id="usuario" 
+                minlength="6" maxlength="12" required onblur="validarUsuario()">
+            <span id="errUsuario"></span>
+
+            <label for="pass1">* Password:</label>
+            <div class="password-container">
+                <input type="password" name="pass1" id="pass1" 
+                    minlength="6" maxlength="20" required onkeyup="validarPass()">
+                <img id="ojo" alt="Mostrar contraseña" 
+                    src="img/ojoabierto.jpg" onclick="mostrarPass()">
+            </div>
+            <span id="errPass1"></span>
+            <div id="fortaleza"></div>
+
+            <label for="pass2">* Repite la password:</label>
+            <input type="password" name="pass2" id="pass2" 
+                minlength="6" maxlength="20" required onblur="validarPass()">
+            <span id="errPass2"></span>
+
+            <label for="provincia">* Provincia:</label>
+            <input type="text" name="provincia" id="provincia" 
+                minlength="2" maxlength="50" required onblur="validarProvincia()">
+            <span id="errProvincia"></span>
+
+            <label for="transporte">* Medio de transporte:</label>
+            <select name="transporte" id="transporte" required>
+                <option value="">Seleccione uno</option>
+                <option value="coche">Coche</option>
+                <option value="moto">Moto</option>
+                <option value="bicicleta">Bicicleta</option>
+                <option value="transporte_publico">Transporte Público</option>
+                <option value="a_pie">A pie</option>
+            </select>
+            <span id="errTransporte"></span>
+
+            <div class="inline-group">
+                <label for="cookies">* Aceptar cookies:</label>
+                <input type="checkbox" name="cookies" id="cookies" required>
+                <span id="errCookies"></span>
+            </div>
+
+            <div class="inline-group">
+                <label for="privacidad">* Aceptar privacidad:</label>
+                <input type="checkbox" name="privacidad" id="privacidad" required>
+                <span id="errPrivacidad"></span>
+            </div>
+
+            <input id="boton" type="submit" value="Enviar">
+        </form>
+    </div>
+
+    <script>
+        function mostrarPass() {
+            let pass1 = document.getElementById("pass1");
+            let pass2 = document.getElementById("pass2");
+            let ojo = document.getElementById("ojo");
+
+            if(ojo.src.includes("ojoabierto")) {
+                pass1.type = "text";
+                ojo.src = "img/ojocerrado.png";
+                pass2.disabled = true;
+            } else {
+                pass1.type = "password";
+                ojo.src = "img/ojoabierto.png";
+                pass2.disabled = false;
+            }
+        }
+
+        function validarPass() {
+            let puntuacion = 0;
+            let pass = document.getElementById("pass1");
+            let regex;
+
+            if(pass.value.length > 12) puntuacion++;
+            regex = /[A-ZÑ]/;
+            if(regex.test(pass.value)) puntuacion++;
+            regex = /[a-zñ]/;
+            if(regex.test(pass.value)) puntuacion++;
+            regex = /[0-9]/;
+            if(regex.test(pass.value)) puntuacion++;
+            regex = /[\-_\$%&!\.]/;
+            if(regex.test(pass.value)) puntuacion++;
+
+            if(puntuacion > 0) {
+                let fortaleza = document.getElementById("fortaleza");
+                fortaleza.style.width = (puntuacion * 20) + "%";
+                switch (puntuacion) {
+                    case 1: fortaleza.style.backgroundColor = "#e74c3c"; break;
+                    case 2: fortaleza.style.backgroundColor = "#ff6f47"; break;
+                    case 3: fortaleza.style.backgroundColor = "#f1c40f"; break;
+                    case 4: fortaleza.style.backgroundColor = "#2ecc71"; break;
+                    case 5: fortaleza.style.backgroundColor = "#27ae60"; break;
+                }
+            }
+        }
+
+        function pintarError(objeto) {
+            let boton = document.getElementById("boton");
+            objeto.classList.add("error");
+            boton.disabled = true;
+        }
+
+        function despintarError(objeto) {
+            let boton = document.getElementById("boton");
+            objeto.classList.remove("error");
+            boton.disabled = false;
+        }
+
+        function validarNombre() {
+            let nombre = document.getElementById("nombre");
+            let error = document.getElementById("errNombre");
+            let err = false;
+            var regex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚàèòÀÈÒü·çÇ\s]+$/;
+
+            if (nombre.value.length < 2) {
+                err = true;
+                pintarError(nombre);
+                error.innerHTML = "El nombre tiene menos de dos caracteres.";
+            } else if (nombre.value.length > 50) {
+                err = true;
+                pintarError(nombre);
+                error.innerHTML = "El nombre es muy largo.";
+            } else if (!regex.test(nombre.value)) {
+                err = true;
+                pintarError(nombre);
+                error.innerHTML = "El nombre contiene caracteres extraños.";
+            }
+
+            if(!err) {
+                despintarError(nombre);
+                error.innerHTML = "";
+            }
+        }
+
+        function validarApellido() {
+            let apellido = document.getElementById("apellido");
+            let error = document.getElementById("errApellido");
+            let err = false;
+            var regex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚàèòÀÈÒü·çÇ\s]+$/;
+
+            if (apellido.value.length < 4) {
+                err = true;
+                pintarError(apellido);
+                error.innerHTML = "El apellido tiene menos de cuatro caracteres.";
+            } else if (apellido.value.length > 75) {
+                err = true;
+                pintarError(apellido);
+                error.innerHTML = "El apellido es muy largo.";
+            } else if (!regex.test(apellido.value)) {
+                err = true;
+                pintarError(apellido);
+                error.innerHTML = "El apellido contiene caracteres extraños.";
+            }
+
+            if(!err) {
+                despintarError(apellido);
+                error.innerHTML = "";
+            }
+        }
+
+        function validarUsuario() {
+            let usuario = document.getElementById("usuario");
+            let error = document.getElementById("errUsuario");
+            let err = false;
+            var regex = /^[a-zA-Z0-9_\s]+$/;
+
+            if (usuario.value.length < 6) {
+                err = true;
+                pintarError(usuario);
+                error.innerHTML = "El usuario tiene menos de seis caracteres.";
+            } else if (usuario.value.length > 12) {
+                err = true;
+                pintarError(usuario);
+                error.innerHTML = "El usuario es muy largo.";
+            } else if (!regex.test(usuario.value)) {
+                err = true;
+                pintarError(usuario);
+                error.innerHTML = "El usuario contiene caracteres extraños.";
+            }
+
+            if(!err) {
+                despintarError(usuario);
+                error.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
